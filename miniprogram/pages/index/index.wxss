@@ -1,0 +1,90 @@
+/**index.wxss**/
+
+@import "../../app.wxss";
+
+page {
+  background: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.title{
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.title .main{
+  font-size: 48rpx;
+  color: rgb(0, 255, 200);
+}
+
+.title .sub{
+  font-size: 36rpx;
+  font-family: "楷体","楷体_GB2312";
+}
+
+.userinfo {
+  width: 600rpx;
+  background-color: rgb(215, 245, 235);
+  border-radius: 35rpx;
+}
+
+.userinfo .avatar {
+  width: 100rpx;
+  height: 100rpx;
+  margin: 16rpx;
+  border-radius: 50%;
+}
+
+.userinfo .nickname {
+  font-size: 32rpx;
+  color: #248fe6;
+  text-align: left;
+  margin-top: 16rpx;
+}
+
+.userinfo .touser{
+  font-size: 32rpx;
+  color: #130101;
+  text-align: left;
+  margin-left: 64rpx;
+  margin-top: 24rpx;
+}
+
+.form_addgoods{
+  width: 640rpx;
+  margin-top: 36rpx;
+  padding-top: 24rpx;
+  border-color: hotpink;
+  border-width: 3rpx;
+  border-style: ridge;
+  border-radius: 24rpx;
+}
+
+.form_addgoods .name{
+  width: 160rpx;
+}
+
+.form_addgoods .list{
+  margin-bottom: 18rpx;
+}
+
+.related_product{
+  margin: 20rpx 20rpx 0rpx 20rpx
+}
+
+.related_product .title{
+  text-align: center;
+}
+
+.related_product .list{
+  margin-bottom: 20rpx;
+}
+
+.image_logo{
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  margin-right: 10rpx;
+}

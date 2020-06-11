@@ -1,0 +1,19 @@
+<!--pages/mine/mine.wxml-->
+
+<view wx:for="{{strFunctionChooses}}"wx:key="none">
+	<view id="{{index+1}}" class="viewListItem {{iFunctionChoose == index+1 ? 'viewListItemShow' : ''}}" bindtap="bindtapList">
+		<text class="textListItem">{{item}}</text>
+	</view>
+
+	<block wx:if="{{iFunctionChoose == index+1 && iFunctionChoose == 1}}">
+		
+	</block>
+
+	<block wx:elif="{{iFunctionChoose == index+1 && iFunctionChoose == 2}}">
+		
+	</block>
+
+	<block wx:else>
+	</block>
+</view>
+

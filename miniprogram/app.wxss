@@ -1,0 +1,56 @@
+/**app.wxss**/
+.container_center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.container_left {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  box-sizing: border-box;
+}
+
+.container_right {
+  display: flex;
+  flex-direction: column;
+  align-items: right;
+  box-sizing: border-box;
+}
+
+.layout_horizontal {
+  display: flex;
+  flex-direction: row;
+}
+
+.layout_vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.input{
+  background-color: gainsboro;
+  width: 300rpx;
+}
+
+.viewListItem{
+  padding: 50rpx;
+  display: flex; 
+  align-items: center;
+  transition: opacity .3s;
+  border-bottom-style: solid;
+  border-bottom-width: 10rpx;
+  border-bottom-color: rgb(0, 0, 0);
+  background-color: white;
+}
+
+.viewListItemShow{
+  opacity: .2;
+}
+
+.textListItem{
+  flex: 1;
+  font-size: 38rpx;
+}

@@ -1,0 +1,14 @@
+<!--miniprogram/pages/mine/infomanage.wxml-->
+<text>{{type}}</text>
+
+<view wx:for="{{items}}" wx:key="none">
+	<view class="list-box">
+		<text class="text-item-name">{{item}}</text>
+		<text class="item-del">删除</text>
+	</view>
+</view>
+
+<view class="container_center">
+	<input class="input" value="{{addname}}" bindblur="bindblurAdd"></input>
+	<button bindtap="bindtapAdd">添加</button>
+</view>

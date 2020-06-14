@@ -1,0 +1,19 @@
+/* miniprogram/pages/mine/infomanage.wxss */
+@import "../../app.wxss";
+
+.list-box{
+  display: flex;
+  margin: 15rpx;
+  background-color: bisque;
+}
+
+.list-box .text-item-name{
+  width: 600rpx;
+}
+
+.list-box .item-del{
+  background-color: red;
+  width: 120rpx;
+  text-align: center;
+  border-radius: 15rpx;
+}

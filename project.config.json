@@ -22,7 +22,9 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
-		"bundle": true
+		"bundle": true,
+		"useCompilerModule": false,
+		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"appid": "wx28ba0ae0d2f6a3b5",
 	"projectname": "Discount%20Account",

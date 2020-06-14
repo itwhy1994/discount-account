@@ -5,22 +5,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    strFunctionChooses: ["分类管理", "商品管理"],
+    strFunctionChooses: ["商户(商家)管理", "商品分类及商品管理"],
     iFunctionChoose: 0,
   },
 
   bindtapList: function(e) {
     var idTap = parseInt(e.currentTarget.id)
-    if (this.data.iFunctionChoose == idTap) {
-      this.setData({
-        iFunctionChoose: 0
-      })
-    } 
-    else {
-      this.setData({
-        iFunctionChoose: idTap
-      })
-    }
+    wx.navigateTo({
+      url: 'infomanage?type=' + this.data.strFunctionChooses[idTap-1],
+    })
   },
 
 
@@ -70,13 +63,6 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
 
   }
 })

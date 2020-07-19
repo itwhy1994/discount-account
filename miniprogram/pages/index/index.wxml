@@ -16,25 +16,29 @@
 	</view>
 
 	<view class="container_center form_addgoods">
-		<form>
+		<form bindsubmit="bindsubmitaddgoods">
 			<view class="layout_horizontal list">
 				<text class="name">商户名：</text>
-				<input class="input"></input>
+				<picker class="picker" bindtap="getDataStore" bindchange="bindchangeStore" value="{{indexstore}}" range="{{stores}}">
+					{{stores[indexstore]}}
+				</picker>
 			</view>
 
 			<view class="layout_horizontal list">
 				<text class="name">分类：</text>
-				<input class="input"></input>
+				<picker class="picker" bindtap="getDataCategory" bindchange="bindchangeCategory" value="{{indexcategory}}" range="{{categories}}">
+					{{categories[indexcategory]}}
+				</picker>
 			</view>
 
 			<view class="layout_horizontal list">
 				<text class="name">商品名：</text>
-				<input class="input"></input>
+				<input class="input" bindblur="bindblurname"></input>
 			</view>
 
 			<view class="layout_horizontal list">
 				<text class="name">价格：</text>
-				<input class="input" type="number"></input>
+				<input class="input" type="number" bindblur="bindblurprice"></input>
 			</view>
 			<button class="list" type="primary" form-type="submit">添加商品信息</button>
 			<button class="list" type="warn" form-type="reset">重新填写 </button>

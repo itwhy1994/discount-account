@@ -5,79 +5,223 @@ Page({
    * 页面的初始数据
    */
   data: {
-    type: "none",
-    dbname: "",
-    items:[],
-    _id: "",
-    addname: "",
+    stores: [],
+    addnamestore: "",
+    _idstore: "",
+
+    categories: [],
+    addnamecategory: "",
+    _idcategory: "",
+    
+    goods: [],
   },
 
-  getData(){
+  getDataStore(){
     let that = this
     const db = wx.cloud.database()
-    db.collection(this.data.dbname).where({
+    db.collection("store").where({
       // openid
     }).get().then(res =>{
-      if (res.data.length){
-        that.setData({
-          _id: res.data[0]._id,
-          items: res.data[0].items,
+      if (res.errMsg == "collection.get:ok"){
+        if (res.data.length){
+          that.setData({
+            _idstore: res.data[0]._id,
+            stores: res.data[0].items,
+          })
+        }
+      }
+      else{
+        wx.showToast({
+          title: '数据获取失败！',
+          duration: 1500,
+        })
+        this.getDataStore()
+      }
+    })
+  },
+
+  bindblurAddStore(e){
+    this.setData({
+      addnamestore: e.detail.value,
+    })
+  },
+
+  bindtapAddStore(){
+    let that = this
+    const db = wx.cloud.database()
+    let stores = this.data.stores
+    stores.push(this.data.addnamestore)
+    this.setData({
+      stores,
+    })
+    if (this.data._idstore.length){
+      db.collection("store").doc(this.data._idstore).update({
+        data:{
+          items: db.command.push([this.data.addnamestore]),
+        }
+      })
+    }
+    else{
+      db.collection("store").add({
+        data:{
+          items: [this.data.addnamestore],
+        }
+      }).then(res =>{
+        that.data._idstore = res._id
+      })
+    }
+  },
+
+  bindtapDelStore(e){
+    const index = e.currentTarget.dataset.index
+    let stores = this.data.stores
+    let that = this
+    wx.showModal({
+      cancelText: '取消',
+      confirmText: '确认',
+      content: '删除该信息',
+      showCancel: true,
+      success: (result) => {
+        if (result.confirm){
+          stores.splice(index, 1)
+          that.setData({
+            stores,
+          })
+          const db = wx.cloud.database()
+          db.collection("store").doc(that.data._idstore).update({
+            data:{
+              items: stores,
+            }
+          })
+        }
+      },
+      title: '删除确认？',
+    })
+  },
+
+  getDataCategory(){
+    let that = this
+    const db = wx.cloud.database()
+    db.collection("category").where({
+      // openid
+    }).get().then(res =>{
+      if (res.errMsg == "collection.get:ok"){
+        if (res.data.length){
+          that.setData({
+            _idcategory: res.data[0]._id,
+            categories: res.data[0].items,
+          })
+        }
+      }
+      else{
+        wx.showToast({
+          title: '数据获取失败！',
+          duration: 1500,
+        })
+        this.getDataCategory()
+      }
+    })
+  },
+
+  getDataGoodsByCategory(category){
+    let that = this
+    const db = wx.cloud.database()
+    db.collection("goods").where({
+      // openid
+      category: category
+    }).get().then(res =>{
+      if (res.errMsg == "collection.get:ok"){
+        if (res.data.length){
+          that.setData({
+            goods: res.data,
+          })
+        }
+        else{
+          wx.showToast({
+            title: '没有相关数据！',
+            duration: 1500,
+          })
+        }
+      }
+      else{
+        wx.showToast({
+          title: '数据获取失败！',
+          duration: 1500,
         })
       }
     })
   },
 
-  bindblurAdd(e){
+  bindtapCategory(e){
+    const index = e.currentTarget.dataset.index
+    this.getDataGoodsByCategory(this.data.categories[index])
+  },
+
+  bindblurAddCategory(e){
     this.setData({
-      addname: e.detail.value,
+      addnamecategory: e.detail.value,
     })
   },
 
-  bindtapAdd(){
+  bindtapAddCategory(){
     let that = this
     const db = wx.cloud.database()
-    if (this.data._id.length){
-      db.collection(this.data.dbname).doc(this.data._id).update({
+    let categories = this.data.categories
+    categories.push(this.data.addnamecategory)
+    this.setData({
+      categories,
+    })
+    if (this.data._idcategory.length){
+      db.collection("category").doc(this.data._idcategory).update({
         data:{
-          items: db.command.push([this.data.addname]),
+          items: db.command.push([this.data.addnamecategory]),
         }
       })
     }
     else{
-      db.collection(this.data.dbname).add({
+      db.collection("category").add({
         data:{
-          items: [this.data.addname],
+          items: [this.data.addnamecategory],
         }
       }).then(res =>{
-        that.data._id = res._id
+        that.data._idcategory = res._id
       })
     }
+  },
+
+  bindtapDelCategory(e){
+    const index = e.currentTarget.dataset.index
+    let categories = this.data.categories
+    let that = this
+    wx.showModal({
+      cancelText: '取消',
+      confirmText: '确认',
+      content: '删除该信息',
+      showCancel: true,
+      success: (result) => {
+        if (result.confirm){
+          categories.splice(index, 1)
+          that.setData({
+            categories,
+          })
+          const db = wx.cloud.database()
+          db.collection("category").doc(that.data._idcategory).update({
+            data:{
+              items: categories,
+            }
+          })
+        }
+      },
+      title: '删除确认？',
+    })
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (options.type == "商户管理"){
-      this.setData({
-        type: options.type,
-        dbname: "store",
-      })
-    }
-    else if (options.type == "分类管理"){
-      this.setData({
-        type: options.type,
-        dbname: "category",
-      })
-    }
-    else if (options.type == "商品管理"){
-      this.setData({
-        type: options.type,
-        dbname: "goods",
-      })
-    }
-
-    this.getData()
+    this.getDataStore()
+    this.getDataCategory()
   },
 
   /**

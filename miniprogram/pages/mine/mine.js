@@ -5,14 +5,13 @@ Page({
    * 页面的初始数据
    */
   data: {
-    strFunctionChooses: ["商户(商家)管理", "商品分类及商品管理"],
+    strFunctionChooses: ["商户、分类、商品管理"],
     iFunctionChoose: 0,
   },
 
   bindtapList: function(e) {
-    var idTap = parseInt(e.currentTarget.id)
     wx.navigateTo({
-      url: 'infomanage?type=' + this.data.strFunctionChooses[idTap-1],
+      url: 'infomanage?type=' + e.currentTarget.id,
     })
   },
 

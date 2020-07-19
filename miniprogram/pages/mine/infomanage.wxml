@@ -1,14 +1,34 @@
 <!--miniprogram/pages/mine/infomanage.wxml-->
-<text>{{type}}</text>
 
-<view wx:for="{{items}}" wx:key="none">
+<view class="viewTitle">商户管理 </view>
+<view wx:for="{{stores}}" wx:key="none">
 	<view class="list-box">
-		<text class="text-item-name">{{item}}</text>
-		<text class="item-del">删除</text>
+		<text class="text-item-name" data-index="{{index}}">{{item}}</text>
+		<text class="item-del" bindtap="bindtapDelStore" data-index="{{index}}">删除</text>
 	</view>
 </view>
-
 <view class="container_center">
-	<input class="input" value="{{addname}}" bindblur="bindblurAdd"></input>
-	<button bindtap="bindtapAdd">添加</button>
+	<input class="input input-addname" value="{{addnamestore}}" bindblur="bindblurAddStore" placeholder="输入需要添加的商户"></input>
+	<button bindtap="bindtapAddStore">添加</button>
+</view>
+
+<view class="viewTitle">分类管理</view>
+<text>点击选项查看该分类对应商品</text>
+<view wx:for="{{categories}}" wx:key="none">
+	<view class="list-box">
+		<text class="text-item-name" data-index="{{index}}" bindtap="bindtapCategory">{{item}}</text>
+		<text class="item-del" bindtap="bindtapDelCategory" data-index="{{index}}">删除</text>
+	</view>
+</view>
+<view class="container_center">
+	<input class="input input-addname" value="{{addnamecategory}}" bindblur="bindblurAddCategory" placeholder="输入需要添加的分类"></input>
+	<button bindtap="bindtapAddCategory">添加</button>
+</view>
+
+<view class="viewTitle">商品管理</view>
+<view wx:for="{{goods}}" wx:key="_id">
+	<view class="list-box">
+		<text class="text-item-name" bindtap="bindtapItem" data-index="{{index}}">{{item.name}}-{{item.store}}-{{item.price}}</text>
+		<text class="item-del" bindtap="bindtapDelGoods" data-index="{{index}}">删除</text>
+	</view>
 </view>

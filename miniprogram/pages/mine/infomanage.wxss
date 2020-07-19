@@ -1,6 +1,17 @@
 /* miniprogram/pages/mine/infomanage.wxss */
 @import "../../app.wxss";
 
+.viewTitle{
+  color: darkblue;
+  font-size: 48rpx;
+  font-weight: bold;
+  margin-top: 50rpx;
+  margin-left: 18rpx;
+  border-top: darkgoldenrod;
+  border-top-width: 5rpx;
+  border-top-style: ridge;
+}
+
 .list-box{
   display: flex;
   margin: 15rpx;
@@ -16,4 +27,10 @@
   width: 120rpx;
   text-align: center;
   border-radius: 15rpx;
+}
+
+.input-addname{
+  margin: 20rpx;
+  height: 36rpx;
+  width: 500rpx;
 }

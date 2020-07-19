@@ -53,7 +53,7 @@ page {
 }
 
 .form_addgoods{
-  width: 640rpx;
+  width: 700rpx;
   margin-top: 36rpx;
   padding-top: 24rpx;
   border-color: hotpink;
@@ -64,6 +64,11 @@ page {
 
 .form_addgoods .name{
   width: 160rpx;
+}
+
+.form_addgoods .picker{
+  width: 480rpx;
+  background-color: darkkhaki;
 }
 
 .form_addgoods .list{

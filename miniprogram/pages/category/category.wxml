@@ -3,18 +3,18 @@
 <view class="main">
   <view class="categroy-left">
     <view wx:for="{{categories}}" wx:key="none">
-      <view class="cate-list {{curIndex === index?'on':''}}" data-index="{{index}}" bindtap="switchTab">{{item}}</view>
+      <view class="cate-list {{curIndex === index?'on':''}}" data-index="{{index}}" bindtap="switchTab">{{item.showText}}</view>
     </view>
   </view>
 
   <view class="categroy-right">
     <view class="cate-box">
       <view class="cate-title">
-        <text>{{categories[curIndex]}}</text>
+        <text>{{categories[curIndex].showText}}</text>
       </view>
       <view class="product">
         <view class="product-list" wx:for="{{curClassGoods}}" wx:key="name">
-          <navigator url="../details/details?name={{item.name}}">
+          <navigator url="../details/details?name={{item.showText}}">
             <view class="classname">
               <text>{{item.name}} </text>
               <text>￥{{item.price}}</text>

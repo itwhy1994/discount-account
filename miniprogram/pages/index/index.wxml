@@ -2,8 +2,8 @@
 <view class="container_center">
 
 	<view class="layout_vertical title">
-		<text class="main">惠买手账</text>
-		<text class="sub">买得更优惠，买得更实在</text>
+		<text class="main">惠买慧生活</text>
+		<text class="sub">花更少的钱，办更多的事</text>
 	</view>
 
 	<!-- 用户 -->
@@ -16,7 +16,31 @@
 	</view>
 
 	<view class="container_center form_addgoods">
-		<form bindsubmit="bindsubmitaddgoods">
+		<view>
+			<view class="layout_horizontal list">
+				<text class="name">分类：</text>
+				<picker class="picker" range-key="showText" bindchange="bindchangeCategory" value="{{indexcategory}}"
+					range="{{categories}}">
+					{{categories[indexcategory].showText}}
+				</picker>
+			</view>
+
+			<view class="layout_horizontal list">
+				<text class="name">商品名：</text>
+				<!-- <input class="input" maxlength="20" bindblur="bindblurname"></input> -->
+				<picker class="picker" bindchange="bindchangeGoods" value="{{indexgoods}}" range="{{goods}}">
+					{{goods[indexgoods]}}
+				</picker>
+			</view>
+
+			<view class="layout_vertical">
+				<view class="layout_horizontal list">
+					<text class="name">新增：</text>
+					<input class="input" type="text" maxlength="20" bindblur="bindbluraddGoods"></input>
+				</view> 
+				<button class="list" size="mini" type="primary" bindtap="bindtapaddName">添加商品</button>
+			</view>
+
 			<view class="layout_horizontal list">
 				<text class="name">商户名：</text>
 				<picker class="picker" bindtap="getDataStore" bindchange="bindchangeStore" value="{{indexstore}}" range="{{stores}}">
@@ -25,24 +49,11 @@
 			</view>
 
 			<view class="layout_horizontal list">
-				<text class="name">分类：</text>
-				<picker class="picker" bindtap="getDataCategory" bindchange="bindchangeCategory" value="{{indexcategory}}" range="{{categories}}">
-					{{categories[indexcategory]}}
-				</picker>
-			</view>
-
-			<view class="layout_horizontal list">
-				<text class="name">商品名：</text>
-				<input class="input" bindblur="bindblurname"></input>
-			</view>
-
-			<view class="layout_horizontal list">
 				<text class="name">价格：</text>
 				<input class="input" type="number" bindblur="bindblurprice"></input>
 			</view>
-			<button class="list" type="primary" form-type="submit">添加商品信息</button>
-			<button class="list" type="warn" form-type="reset">重新填写 </button>
-		</form>
+			<button class="list" type="primary" bindtap="bindsubmitaddgoods">添加商品信息</button>
+		</view>
 	</view>
 
 </view>

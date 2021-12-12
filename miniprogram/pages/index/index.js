@@ -10,8 +10,15 @@ Page({
     categories: [],
     indexcategory: -1,
 
+    goods: [],
+    goods_id: "", 
+    indexgoods:-1,
+
     name: "",
     price: -1,
+
+    priceinfo: [],
+    priceinfo_id: "",
   },
 
   setUserLoginCount(){
@@ -66,8 +73,38 @@ Page({
       } else {
         wx.showToast({
           title: '商户数据获取失败！',
-          duration: 1500,
           icon: "none",
+        })
+      }
+    })
+  },
+
+  getGoodsByCategory(){
+    let that = this
+    const db = wx.cloud.database()
+    db.collection("goods2category").where({
+      category: this.data.categories[this.data.indexcategory].showText,
+    }).get().then(res => {
+      if(res.errMsg == "collection.get:ok"){
+        if(res.data.length){
+          console.log(res.data[0])
+          that.setData({
+            goods: res.data[0].goods,
+            goods_id: res.data[0]._id,
+            indexgoods: 0,
+          })
+        }
+        else{
+          that.setData({
+            goods: [],
+            goods_id: "",
+            indexgoods: -1,
+          })
+        }
+      }else{
+        wx.showToast({
+          title: '查询商品失败',
+          icon: 'none',
         })
       }
     })
@@ -77,6 +114,7 @@ Page({
     this.setData({
       indexcategory: e.detail.value,
     })
+    this.getGoodsByCategory()
   },
 
   getDataCategory() {
@@ -88,31 +126,137 @@ Page({
       if (res.errMsg == "collection.get:ok") {
         if (res.data.length) {
           that.setData({
-            categories: res.data[0].items,
+            categories: res.data,
             indexcategory: 0,
+          })
+        }
+        else {
+          wx.showToast({
+            title: '分类数据获取失败，请刷新！',
+            icon: "none",
           })
         }
       } else {
         wx.showToast({
-          title: '分类数据获取失败！',
-          duration: 1500,
+          title: '分类数据获取失败，请刷新！',
           icon: "none",
         })
       }
     })
   },
 
-  bindblurname(e){
+  bindchangeGoods(e){
     this.setData({
-      name: e.detail.value,
+      indexgoods:e.detail.value,
     })
+    const db = wx.cloud.database()
+    let that = this
+    db.collection("goodsinfo").where({
+      category: this.data.categories[this.data.indexcategory],
+      goods: this.data.goods[this.data.indexgoods],
+    }).get().then(res =>{
+      if(res.errMsg == "collection.get:ok"){
+        if(res.data.length){
+          that.setData({
+            priceinfo: res.data[0].info,
+            priceinfo_id: res.data[0]._id,
+          })
+        }
+        else{
+          that.setData({
+            priceinfo: [],
+            priceinfo_id: "",
+          })
+        }
+      }
+      else{
+        wx.showToast({
+          title: '该商品价格信息获取失败！',
+          icon: 'none',
+        })
+      }
+    })
+
+  },
+
+  bindbluraddGoods(e){
+    this.data.name = e.detail.value
+  },
+
+  bindtapaddName(){
+    if (this.data.name.length){
+      if(this.data.goods.includes(this.data.name)){
+        wx.showToast({
+          title: '已有该商品！',
+          icon: "none",
+        })
+      }
+      else{
+        if(this.data.goods.length){
+          const db = wx.cloud.database()
+          let that = this
+          db.collection("goods2category").doc(this.data.goods_id).update({
+            data: {
+              goods: db.command.addToSet(this.data.name),
+            }
+          }).then(res =>{
+            if(res.errMsg == "document.update:ok"){
+              let goods = that.data.goods
+              goods.push(that.data.name)
+              that.setData({
+                goods: goods,
+                indexgoods: goods.length-1,
+              })
+              wx.showToast({title: '商品添加成功！',})
+            }
+            else{
+              console.log(res.errMsg)
+              wx.showToast({
+                title: '商品添加失败，请重试！',
+                icon: 'none',
+              })
+            }
+          })
+        }
+        else{
+          const db = wx.cloud.database()
+          let that = this
+          db.collection("goods2category").add({
+            data: {
+              category: this.data.categories[this.data.indexcategory].showText,
+              goods: [this.data.name],
+            }
+          }).then(res =>{
+            if(res.errMsg == "collection.add:ok"){
+              that.setData({
+                goods: [that.data.name],
+                goods_id: res._id,
+                indexgoods: 0,
+              })
+              wx.showToast({ title: '商品添加成功！', })
+            }
+            else{
+              console.log(res.errMsg)
+              wx.showToast({
+                title: '商品添加失败，请重试！',
+                icon: 'none',
+              })
+            }
+          })
+        }
+      }
+    }
+    else{
+      wx.showToast({
+        title: '请填写商品名！',
+        icon: 'none',
+      })
+    }
   },
 
   bindblurprice(e){
     if (e.detail.value){
-      this.setData({
-        price: parseFloat(e.detail.value)
-      })
+      this.data.price = parseFloat(e.detail.value)
     }
   },
 
@@ -120,7 +264,6 @@ Page({
     if (this.data.indexstore < 0){
       wx.showToast({
         title: '请选择商户！',
-        duration: 1500,
         icon: "none",
       })
       return
@@ -128,23 +271,20 @@ Page({
     if (this.data.indexcategory < 0){
       wx.showToast({
         title: '请选择分类！',
-        duration: 1500,
         icon: "none",
       })
       return
     }
-    if (!this.data.name.length){
+    if (this.data.indexgoods < 0){
       wx.showToast({
         title: '请填写商品名！',
-        duration: 1500,
         icon: "none",
       })
       return
     }
-    if (!this.data.price < 0){
+    if (this.data.price < 0){
       wx.showToast({
         title: '请填写价格！',
-        duration: 1500,
         icon: "none",
       })
       return
@@ -152,25 +292,22 @@ Page({
     const db = wx.cloud.database()
     db.collection("goods").add({
       data:{
+        category: this.data.categories[this.data.indexcategory].showText,
+        goodsname: this.data.goods[this.data.indexgoods],
+
         store: this.data.stores[this.data.indexstore],
-        category: this.data.categories[this.data.indexcategory],
-        name: this.data.name,
         price: this.data.price,
       }
     }).then(res =>{
       if (res.errMsg == "collection.add:ok"){
-        wx.showToast({
-          title: '添加成功！',
-          duration: 1500,
-        })
+        wx.showToast({ title: '添加成功！', })
       }
     })
   },
 
   onLoad: function () {
     this.setUserLoginCount()
-    
+    this.getDataCategory()
   },
-
 
 })
